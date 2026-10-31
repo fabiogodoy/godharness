@@ -1,20 +1,72 @@
 #!/usr/bin/env bash
 # Audita a governanca do repositorio (AGENTS.md, docs/adr, intent/, .agents/skills).
-# Uso: scripts/governance-audit.sh
+# Uso: scripts/governance-audit.sh [--template]
 # Sai com codigo != 0 se encontrar qualquer inconsistencia.
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+usage() {
+  echo 'Uso: scripts/governance-audit.sh [--template]'
+  echo 'Padrao: exige bootstrap done. --template: valida o harness generico ainda pending.'
+  echo 'O modo template nao autoriza desenvolver uma aplicacao sem bootstrap.'
+}
+
+mode=project
+if [ "$#" -gt 1 ]; then
+  usage >&2
+  exit 2
+fi
+case "${1:-}" in
+  '') ;;
+  --template) mode=template ;;
+  --help|-h) usage; exit 0 ;;
+  *) usage >&2; exit 2 ;;
+esac
+
 fail=0
 
-echo "== 0. Bootstrap concluido =="
-if grep -q "^bootstrap: pending" .ai/context/project-status.md 2>/dev/null || grep -q "\`pending\`" .ai/context/project-status.md 2>/dev/null; then
-  echo "FALHA: bootstrap ainda pendente (.ai/context/project-status.md). Rode \$bootstrap-project antes de qualquer entrega."
-  fail=1
-else
-  echo "OK: bootstrap concluido (ou status nao reconhecido como pendente)."
+# Aceita declaracao canonica ou valor da secao Markdown, sem ler a enumeracao.
+# Multiplas declaracoes permanecem em linhas distintas e nao casam com um estado valido.
+bootstrap_status=''
+if [ -r .ai/context/project-status.md ]; then
+  bootstrap_status=$(awk '
+    /^bootstrap:[[:space:]]*/ {
+      sub(/^bootstrap:[[:space:]]*/, "")
+      sub(/[[:space:]]*$/, "")
+      print "status:" $0
+      in_bootstrap = 0
+      next
+    }
+    /^##[[:space:]]+bootstrap[[:space:]]*$/ { in_bootstrap = 1; next }
+    /^##[[:space:]]/ { in_bootstrap = 0 }
+    in_bootstrap && NF {
+      if ($0 ~ /^[[:space:]]*`[^`]+`[[:space:]]*$/) {
+        sub(/^[[:space:]]*`/, "")
+        sub(/`[[:space:]]*$/, "")
+      }
+      print "status:" $0
+      in_bootstrap = 0
+    }
+  ' .ai/context/project-status.md)
 fi
+
+echo "== 0. Bootstrap (modo: $mode) =="
+case "$bootstrap_status" in
+  status:done) echo 'OK: bootstrap concluido.' ;;
+  status:pending)
+    if [ "$mode" = template ]; then
+      echo 'OK: template com bootstrap pending; nao libera desenvolvimento de aplicacao.'
+    else
+      echo 'FALHA: bootstrap pendente. Rode $bootstrap-project antes de entregar uma aplicacao.'
+      fail=1
+    fi
+    ;;
+  *)
+    echo 'FALHA: bootstrap ausente, invalido, ambiguo ou in_progress.'
+    fail=1
+    ;;
+esac
 
 echo
 echo "== 1. Numeros de ADR duplicados =="

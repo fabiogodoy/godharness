@@ -113,6 +113,12 @@ Toda alteração estrutural de banco deve possuir migration versionada (a ferram
 
 Toda funcionalidade nova deve possuir testes (ver `.ai/context/testing-standards.md`).
 
+## Aplicação do ub-mode
+
+Usar `$ub-mode` na escrita e alteração de código e verificar seus resultados em `$implementation-review`. A definição operacional está em `.agents/skills/ub-mode/SKILL.md`; este documento continua sendo a base oficial de padrões do projeto.
+
+Planejar testes significativos antes de alterar comportamento; registrar no Test Plan uma alternativa quando não houver teste executável honesto. Os gates, comandos e exceções pertencem a `.ai/context/testing-standards.md`; métricas não substituem requisitos, segurança ou legibilidade. Refatorações permanecem limitadas ao escopo da Intent/PRD.
+
 ---
 
 ## Refatoração
@@ -141,6 +147,7 @@ Antes de adicionar uma biblioteca nova, perguntar:
 
 * [ ] Código compila/roda sem erros
 * [ ] Testes passam
+* [ ] `$ub-mode` aplicado; evidências e limitações dos gates registradas na review
 * [ ] Sem código duplicado desnecessário
 * [ ] Sem warnings relevantes
 * [ ] Sem logs de debug esquecidos

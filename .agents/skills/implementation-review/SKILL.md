@@ -19,6 +19,7 @@ Seu objetivo não é validar requisitos de negócio, nem validar cobertura do PR
 * `.ai/context/architecture.md`
 * `.ai/context/coding-standards.md`
 * `.ai/context/testing-standards.md`
+* `.agents/skills/ub-mode/SKILL.md`
 * Intent, PRD, Impact Analysis, ADR (quando existir)
 
 ## Entrada / Saída
@@ -42,6 +43,7 @@ Saída: `intent/<slug>_implementation-review.md`
 10. **Performance** — classificar baixa/média/alta.
 11. **Dependências novas** — eram realmente necessárias? O ganho compensa o custo?
 12. **Débito técnico** — identificar atalhos/workarounds/limitações e documentar motivo, impacto e plano futuro.
+13. **Aplicação do `$ub-mode`** — confrontar o diff com os padrões, Test Plan e evidências: comportamento validado, causa corrigida, refatoração no escopo e gates configurados executados. Registrar por gate comando/resultado/evidência ou motivo de ausência/não aplicabilidade. Gate obrigatório ausente ou falho reprova, salvo exceção expressamente aprovada e registrada na governança; gate não obrigatório pendente permanece como limitação no Validation Report. Cobertura, CRAP, duplicação e mutação não se substituem entre si.
 
 ---
 
@@ -49,6 +51,7 @@ Saída: `intent/<slug>_implementation-review.md`
 
 * [ ] arquitetura respeitada
 * [ ] padrões respeitados
+* [ ] `$ub-mode` verificado; resultados dos gates e limitações registrados
 * [ ] código reutilizado
 * [ ] segurança revisada
 * [ ] multi-tenancy revisada (quando aplicável)

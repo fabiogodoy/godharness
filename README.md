@@ -76,6 +76,7 @@ CLAUDE.md                      # ponteiro para AGENTS.md (compat. Claude Code)
 .agents/skills/                # skills invocáveis pelo agente ($nome-da-skill)
 ├── bootstrap-project/         # entrevista inicial — cria o contexto do zero
 ├── orchestrator/              # coordena o fluxo completo ponta a ponta
+├── ub-mode/                   # padrões aplicados ao escrever e revisar código
 ├── create-intent/  create-prd/  impact-analysis/
 ├── architecture-review/  business-review/
 ├── security-review/  observability-review/
@@ -99,7 +100,7 @@ flowchart LR
     IA --> AR["🏛️ Architecture Review"]
     AR --> BR["💰 Business Review"]
     BR --> TK["🎫 Tickets<br/>$to-tickets (se necessário)"]
-    TK --> IMPL["⚙️ Implementação"]
+    TK --> IMPL["⚙️ Implementação<br/>$ub-mode"]
     IMPL --> T["🧪 Testes<br/>$generate-tests"]
     T --> REV["👀 Implementation /<br/>Security / Observability Review"]
     REV --> MAIN["🔀 Reintegração na main<br/>$reintegrar-main"]
@@ -108,6 +109,30 @@ flowchart LR
 ```
 
 Para bugs pequenos e correções de baixo risco, `$orchestrator` define uma **matriz de decisão** com um caminho simplificado (Intent leve → PRD leve → implementação → testes → validação) — o rigor é proporcional ao risco, não burocracia por burocracia.
+
+## Padrões de escrita de código: ub-mode
+
+O harness agora incorpora uma **adaptação local do [ub-mode de unclebob](https://github.com/unclebob/ub-mode)**. O `$orchestrator` aciona `$ub-mode` antes e durante a escrita ou alteração de código, e `$implementation-review` confere sua aplicação e as evidências. A skill também pode ser invocada diretamente, respeitando o bootstrap e as etapas obrigatórias da governança.
+
+A orientação combina implementação em fatias verificáveis, testes de comportamento, correção de causas e refatoração dentro da Intent/PRD. Os padrões oficiais continuam em [coding-standards.md](.ai/context/coding-standards.md), e os comandos e critérios de verificação em [testing-standards.md](.ai/context/testing-standards.md).
+
+Durante o bootstrap, cada projeto define ferramentas compatíveis, versões, comandos, escopo, limiares, obrigatoriedade, exclusões e evidências dos gates de qualidade. As referências de upstream são **Crapper** para CRAP por função (`< 10`), **Dryer** para similaridade de duplicação (`< 0.8`) e **Mutator** para testes de mutação; equivalentes e alterações de limiar precisam de justificativa. Nenhuma dessas ferramentas é instalada pelo harness genérico.
+
+Cada gate recebe estado **aprovado**, **falhou**, **não configurado** ou **não aplicável**, com evidência ou justificativa. Um gate obrigatório ausente ou falho bloqueia a entrega, salvo exceção expressamente aprovada e registrada. Indisponibilidade nunca equivale a aprovação; limitações permanecem no Validation Report. Para documentação sem comportamento executável, a verificação deve corresponder ao artefato, sem testes artificiais.
+
+A adaptação preserva permissões, credenciais, pendências locais e o fluxo de `$reintegrar-main`; não autoriza instalação de ferramentas, limpeza de worktrees ou refatoração fora do escopo. A [procedência e as diferenças de upstream](.agents/skills/ub-mode/references/upstream.md) registram a revisão consultada e a ausência de declaração de licença identificada nessa revisão. O texto local não é uma cópia integral da skill externa.
+
+### Verificação do próprio harness
+
+Para manutenção deste template **expressamente autorizada pelo solicitante**, preservando `bootstrap: pending`:
+
+```bash
+python3 -B -m unittest discover -s scripts/tests -p 'test_*.py' -v
+bash -n scripts/governance-audit.sh
+scripts/governance-audit.sh --template
+```
+
+O modo `--template` verifica a estrutura sem concluir o bootstrap; ele não libera desenvolvimento de aplicação. A execução normal, `scripts/governance-audit.sh`, continua exigindo `bootstrap: done`. A leitura do status agora distingue o valor declarado da enumeração de valores possíveis e reprova estados ausentes, inválidos, ambíguos ou em andamento.
 
 ## Filosofia
 
@@ -127,6 +152,7 @@ Alguns princípios que o harness impõe em `AGENTS.md`:
 |---|---|
 | `$bootstrap-project` | Entrevista inicial — transforma o balão vazio no contexto real do projeto |
 | `$orchestrator` | Coordena o fluxo completo, do entendimento à validação final |
+| `$ub-mode` | Padrões para escrever/alterar código e verificar testes, refatoração e gates na revisão |
 | `$grill-me` / `$grilling` † | Entrevista relâmpago em rodadas para qualquer decisão a esclarecer |
 | `$domain-modeling` † | Glossário de domínio (`CONTEXT.md`) e ADRs leves |
 | `$to-tickets` † | Quebra uma entrega grande em tickets verticais com bloqueios explícitos |
@@ -151,7 +177,7 @@ O harness usa [`AGENTS.md`](https://agents.md) como convenção — funciona com
 
 ## Créditos
 
-Baseado no processo de governança usado no ecossistema [BJJ Control](https://bjjcontrol.com.br), generalizado para qualquer projeto, e incorporando as skills públicas de [Matt Pocock](https://github.com/mattpocock/skills).
+Baseado no processo de governança usado no ecossistema [BJJ Control](https://bjjcontrol.com.br), generalizado para qualquer projeto, e incorporando as skills públicas de [Matt Pocock](https://github.com/mattpocock/skills). A integração de padrões de código inclui uma adaptação local das práticas de [unclebob/ub-mode](https://github.com/unclebob/ub-mode), com [procedência registrada](.agents/skills/ub-mode/references/upstream.md).
 
 ## Licença
 

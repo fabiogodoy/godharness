@@ -79,6 +79,7 @@ Os temas obrigatórios a cobrir (adapte a ordem e o agrupamento ao que fizer sen
 * Como subir o ambiente local para testes manuais/E2E (comando, porta, dependências como banco local).
 * Se houver testes de integração com banco: qual é o banco autorizado para isso, e existe uma regra dura contra rodar teste em produção/homologação?
 * Cobertura mínima esperada, se o time já tiver um padrão.
+* Gates do `$ub-mode`: investigar ferramentas de complexidade/cobertura, duplicação e mutação existentes e sua compatibilidade com a stack. Definir com o usuário ferramenta/versão ou equivalente, comando, escopo, limiar, obrigatoriedade, exclusões e evidências; quando não configurado ou não aplicável, registrar justificativa e limitação. Não instalar ferramentas nem inventar comandos para completar o bootstrap.
 
 #### Bloco 5 — Processo e governança
 
@@ -100,7 +101,7 @@ Reescrever (não apenas anexar) os placeholders:
 * `.ai/context/business.md` — seguir a estrutura do bloco de negócio: visão geral, missão, público-alvo/personas, modelo de negócio (se houver), indicadores importantes, princípios de produto. Se o projeto não tiver contexto comercial (ferramenta interna, biblioteca), adaptar a estrutura para "quem usa isso e por quê" em vez de forçar um modelo de negócio.
 * `.ai/context/architecture.md` — listar cada módulo/repositório com sua stack e responsabilidade, convenções de nomenclatura, regras de comunicação entre módulos, regra de multi-tenancy se aplicável, e uma seção de "critério de escolha de módulo" quando houver mais de um candidato óbvio para uma mudança.
 * `.ai/context/coding-standards.md` — manter a base genérica já existente no arquivo e preencher/expandir apenas a seção final "Convenções Específicas do Projeto" com o que foi coletado.
-* `.ai/context/testing-standards.md` — manter a base genérica já existente e preencher/expandir apenas a seção final "Configuração Específica do Projeto".
+* `.ai/context/testing-standards.md` — manter a base genérica já existente e preencher/expandir apenas a seção final "Configuração Específica do Projeto", incluindo a configuração ou justificativa dos gates do `$ub-mode`.
 * `AGENTS.md` — atualizar a seção "Estrutura do Projeto" (ver marcador `<!-- BOOTSTRAP:PROJECT-STRUCTURE -->`) com a lista real de módulos/repositórios, e a seção "Configuração do Fluxo" (ver marcador `<!-- BOOTSTRAP:FLOW-CONFIG -->`) com as decisões do Bloco 5. Não reescrever o restante de `AGENTS.md` — ele é genérico por design.
 * `.ai/context/project-status.md` — marcar `bootstrap: done`, preencher data, nome do projeto e data da última revisão do contexto.
 

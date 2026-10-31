@@ -84,15 +84,24 @@ Toda funcionalidade nova ou alterada deve possuir, no mínimo:
 
 Toda execução de teste relevante (especialmente E2E) deve produzir evidências: saída de comando, screenshots, vídeos ou logs, conforme o que a stack do projeto permitir.
 
+## Testes de Comportamento e Gates do ub-mode
+
+O Test Plan deve antecipar o comportamento verificável e, quando aplicável, o ciclo de teste falhando pela causa esperada antes da correção e passando depois dela. Refatorações exigem regressão proporcional ao trecho afetado. Documentação sem comportamento executável recebe revisão e verificação adequada ao artefato, sem testes artificiais.
+
+Seguir `.agents/skills/ub-mode/SKILL.md` para os estados dos gates. Cada projeto deve preencher na seção específica abaixo: ferramenta ou equivalente, versão, linguagem/escopo suportado, comando reproduzível, limiar, obrigatoriedade, exclusões justificadas e local da evidência para complexidade/cobertura (CRAP), duplicação e testes de mutação. Os limiares de referência upstream são CRAP por função `< 10` e similaridade de duplicação `< 0.8`; alterações precisam de justificativa. A configuração de mutação deve definir o critério de aprovação e como analisar sobreviventes/equivalentes.
+
+Enquanto não configurado, registrar esse estado, motivo, limitação e próxima ação no Test Plan/Validation Report. Nunca converter indisponibilidade em aprovação. Gate obrigatório ausente ou falhando bloqueia a entrega, salvo exceção expressamente aprovada e registrada; não aplicabilidade precisa de justificativa. O harness genérico não fornece comandos fictícios nem instala Crapper, Dryer ou Mutator.
+
 ---
 
 ## Processo de Entrega
 
 Nenhuma entrega é considerada concluída sem:
 
-* Build executado
-* Testes unitários executados
+* Build executado quando houver alvo executável ou impacto em seu comportamento/configuração
+* Testes unitários executados quando aplicáveis ao comportamento alterado
 * Testes E2E executados quando aplicável
+* Para alterações exclusivamente documentais sem impacto executável: não aplicabilidades justificadas no Test Plan/Validation Report e verificações dos artefatos executadas; gates obrigatórios pertinentes permanecem exigidos
 * Evidências geradas
 * Validation Report aprovado (`$validate-delivery`)
 
@@ -114,5 +123,6 @@ Código sem teste é hipótese. Código validado por testes é evidência. Somen
 > * Como subir o ambiente local para testes manuais/E2E
 > * Banco de dados autorizado para testes de integração, se aplicável, e a regra de que nenhum teste pode rodar contra produção/homologação/qualquer outro banco
 > * Cobertura mínima esperada, se o time definir uma
+> * Gates do `$ub-mode`: ferramenta/versão, compatibilidade/escopo, comando, limiar, obrigatoriedade, exclusões e evidências; ou justificativa explícita de não configuração/não aplicabilidade
 
 *(vazio — aguardando bootstrap)*

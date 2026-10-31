@@ -40,6 +40,7 @@ Saída: `intent/<slug>_test_plan.md`, usando `.ai/templates/test_plan_template.m
 8. **Multi-tenancy** (quando aplicável) — cenário garantindo que um tenant não visualiza dados de outro.
 9. **Segurança** — cenário garantindo que usuário sem permissão não acessa recurso protegido.
 10. **Performance** (quando aplicável) — cenários para consultas, relatórios ou dashboards sensíveis a volume.
+11. **Padrões do `$ub-mode`** — prever teste de comportamento antes da correção quando aplicável, regressão de refatoração e gates configurados em `.ai/context/testing-standards.md`. Para cada gate, registrar comando/versão, escopo, limiar, obrigatoriedade e evidência esperada; ausência ou não aplicabilidade recebe justificativa e limitação, nunca aprovação automática. Para trabalho sem comportamento executável, definir a verificação adequada ao artefato em vez de teste artificial.
 
 ---
 

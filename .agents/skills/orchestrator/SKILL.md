@@ -46,7 +46,7 @@ Business Review ($business-review)
   ↓
 Tickets, quando a entrega exigir mais de uma integração segura na main ($to-tickets)
   ↓
-Implementação
+Implementação ($ub-mode)
   ↓
 Testes ($generate-tests, executados de verdade)
   ↓
@@ -116,7 +116,11 @@ Executar `$generate-tests`. Resultado esperado: `intent/<slug>_test_plan.md`.
 
 Somente após todas as etapas anteriores. Seguir `.ai/context/coding-standards.md`, `architecture.md` e `business.md`.
 
+Acionar `$ub-mode` antes e durante a escrita/alteração de código. O Test Plan deve prever testes de comportamento e os gates configurados em `.ai/context/testing-standards.md`. Avaliar testes antes da alteração de comportamento e refatorar dentro da Intent; não ampliar escopo para satisfazer uma métrica. Ferramentas ausentes e não aplicabilidades têm justificativa e limitação explícitas; gate obrigatório ausente/falho bloqueia, salvo exceção aprovada na governança do projeto.
+
 ## Etapa 9 — Build Obrigatório
+
+As exigências de build, ambiente e testes de aplicação nas etapas e critérios deste fluxo se aplicam quando a entrega possui alvo executável ou afeta seu comportamento/configuração. Para alteração exclusivamente documental sem esse impacto, registrar no Test Plan a não aplicabilidade de cada item e executar a verificação adequada aos artefatos. Essa regra não dispensa validações documentais ou gates obrigatórios pertinentes definidos pelo projeto.
 
 Executar o build do projeto/módulo impactado (comando definido em `.ai/context/testing-standards.md`). Se falhar: PARAR. Não prosseguir.
 

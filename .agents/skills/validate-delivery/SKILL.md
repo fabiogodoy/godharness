@@ -26,6 +26,10 @@ A implementação não é a fonte da verdade. A fonte da verdade é: Intent → 
 Entrada: `intent/<slug>.md`, `intent/<slug>_prd.md`, `intent/<slug>_impact.md`, `intent/<slug>_test_plan.md`, `intent/<slug>_implementation-review.md`, mais toda a implementação.
 Saída: `intent/<slug>_validation_report.md`, usando `.ai/templates/validation_report_template.md`.
 
+## Aplicabilidade das validações
+
+As exigências de build, testes de aplicação e ambiente executado, inclusive nos critérios/checklists abaixo, pressupõem alvo executável ou impacto em seu comportamento/configuração. Para mudança exclusivamente documental sem esse impacto, aceitar não aplicabilidade fundamentada no Test Plan/Validation Report e exigir evidência da verificação dos artefatos alterados. Gates obrigatórios pertinentes, inclusive documentais, continuam bloqueantes; indisponibilidade não justifica não aplicabilidade.
+
 ---
 
 ## Processo
@@ -37,6 +41,7 @@ Saída: `intent/<slug>_validation_report.md`, usando `.ai/templates/validation_r
 5. **Validar Requisitos Não Funcionais** — segurança, multi-tenancy (quando aplicável), performance, compatibilidade, observabilidade.
 6. **Validar Build** — foi executado? Resultado sucesso/falha. Sem build executado: STATUS = REPROVADO.
 7. **Auditoria de governança** — se a entrega criou ou renomeou Intent, PRD, ADR ou skill, executar `scripts/governance-audit.sh`. Script falhando (código de saída ≠ 0): STATUS = REPROVADO até correção.
+   Para manutenção do template expressamente autorizada pelo solicitante com bootstrap pendente, usar `scripts/governance-audit.sh --template`, registrar autorização, modo e resultado. Isso não dispensa bootstrap de aplicações. Nesta manutenção sem aplicação, build/ambiente/E2E de aplicação são não aplicáveis com justificativa; executar a validação dos artefatos e scripts alterados.
 8. **Validar testes** — unitários, integração, E2E realmente executados (não apenas escritos). Reprovar se não executados, falhando ou inexistentes.
 9. **Validar ambiente** — a aplicação foi de fato executada (não só compilada), conforme o procedimento em `.ai/context/testing-standards.md`.
 10. **Validar multi-tenancy** (quando aplicável) — identificador de tenant validado, isolamento preservado, sem vazamento de dados.
@@ -44,6 +49,7 @@ Saída: `intent/<slug>_validation_report.md`, usando `.ai/templates/validation_r
 12. **Validar regressões** — comparar Impact Analysis com o resultado real; alguma regressão prevista ocorreu?
 13. **Validar evidências** — screenshots, vídeos, logs, testes, build. Sem evidência, não considerar validado.
 14. **Validar reintegração na main** — quando a entrega usar branch própria, confirmar com evidência de Git que a branch foi atualizada com `origin/main` antes do merge final, que o commit final pertence à `main` local, e que `origin/main` foi atualizada. Ver `$reintegrar-main`.
+15. **Validar `$ub-mode`** — conferir a Implementation Review e evidências dos gates contra `.ai/context/testing-standards.md`. Exigir estado, resultado ou justificativa e limitações; gate obrigatório ausente/falho reprova sem exceção expressamente aprovada e registrada. Documentar gates não configurados/não aplicáveis e testes impraticáveis sem inventar aprovação.
 
 ---
 

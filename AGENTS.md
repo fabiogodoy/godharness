@@ -60,6 +60,7 @@ Na primeira execução ele não conhece nada sobre a aplicação — isso é res
 └── skills/
     ├── bootstrap-project/
     ├── orchestrator/
+    ├── ub-mode/
     ├── grill-me/
     ├── grilling/
     ├── domain-modeling/
@@ -125,7 +126,7 @@ BUSINESS REVIEW ($business-review)
   ↓
 TICKETS, quando a entrega exigir mais de uma integração segura na main ($to-tickets)
   ↓
-IMPLEMENTAÇÃO
+IMPLEMENTAÇÃO ($ub-mode)
   ↓
 TESTES ($generate-tests)
   ↓
@@ -232,6 +233,12 @@ Toda alteração estrutural deve possuir migration versionada (ferramenta defini
 
 Toda entrega passa pelas skills `$implementation-review`, `$security-review` e `$observability-review`, validando respectivamente: qualidade técnica/aderência arquitetural; segurança e isolamento; e capacidade de diagnóstico em produção.
 
+### Padrões de Escrita de Código
+
+Acionar `$ub-mode` antes e durante a escrita ou alteração de código, seguindo `.ai/context/coding-standards.md` e `.ai/context/testing-standards.md`. A skill orienta implementação, testes de comportamento e refatoração dentro da Intent/PRD. Ela complementa a governança; não substitui o bootstrap, as reviews ou a hierarquia de documentos.
+
+`$implementation-review` verifica a aplicação desses padrões e as evidências dos gates configurados. Gate obrigatório não executado ou falhando bloqueia a entrega, salvo exceção expressamente aprovada e registrada. Ferramentas não configuradas ou não aplicáveis devem ter justificativa e limitações registradas; nunca são declaradas aprovadas sem execução.
+
 ---
 
 ## Validação Final
@@ -247,6 +254,8 @@ O repositório possui um script de checagem automática das regras estruturais d
 ```bash
 scripts/governance-audit.sh
 ```
+
+Para manutenção do template genérico expressamente autorizada pelo solicitante, mantendo `bootstrap: pending`, usar `scripts/governance-audit.sh --template` e registrar a autorização no Validation Report. Esse modo valida a estrutura do harness; não libera desenvolvimento de aplicação antes do bootstrap. O modo padrão continua exigindo `bootstrap: done`.
 
 Ele valida: números de ADR duplicados em `docs/adr/`, ADRs ausentes do índice `docs/adr/README.md`, sufixos de arquivo divergentes em `intent/`, e skills existentes em `.agents/skills/` que não estão listadas neste `AGENTS.md`.
 

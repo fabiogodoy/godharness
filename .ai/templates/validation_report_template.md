@@ -6,6 +6,8 @@
 >
 > O objetivo não é validar código. O objetivo é validar entrega.
 
+> Para trabalho exclusivamente documental sem alvo/impacto executável, registrar não aplicabilidade fundamentada de build, ambiente e testes de aplicação, conforme `$validate-delivery`. Exigir evidência da verificação dos artefatos. Gate obrigatório pertinente ausente/falho não é "não aplicável".
+
 ---
 
 # Metadados
@@ -176,11 +178,11 @@ Links ou caminhos.
 
 ## Build Executado
 
-* Sim / Não
+* Sim / Não / Não aplicável — Justificativa.
 
 ## Resultado
 
-* Sucesso / Falha
+* Sucesso / Falha / Não aplicável — Justificativa.
 
 ---
 
