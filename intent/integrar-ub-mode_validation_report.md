@@ -6,7 +6,7 @@
 - Data: 2026-10-31.
 - Responsável: Codex, com avaliação independente da skill.
 - Referências: [Intent](integrar-ub-mode.md), [PRD](integrar-ub-mode_prd.md), [Impact Analysis](integrar-ub-mode_impact.md), [Test Plan](integrar-ub-mode_test_plan.md).
-- Status: verificações técnicas aprovadas; reintegração/publicação pendentes antes da aprovação final.
+- Status: APROVADO — implementação reintegrada e publicada; fechamento documental registra as evidências abaixo.
 
 ## Resumo e cobertura da Intent
 
@@ -22,9 +22,9 @@ Autorização explícita do solicitante: “Sim, atualizar o harness genérico e
 | RF002 | Atendido | AGENTS, orchestrator e implementation-review com chamada/verificação explícitas |
 | RF003 | Atendido | Standards, bootstrap, generate-tests e validate-delivery com estados, configuração e bloqueio de gates pertinentes |
 | RF004 | Atendido | Auditoria com parsing estrito, modo padrão/template e 18 testes comportamentais aprovados |
-| RF005 | Parcial até publicação | README e artefatos concluídos; publicação será registrada abaixo |
+| RF005 | Atendido | README, artefatos, reviews e implementação publicados em `origin/main`; evidência abaixo |
 
-Cobertura técnica: 5 requisitos implementados, 1 deles aguardando evidência final de publicação. RN001/RN002/RN003 atendidas: placeholders preservados, regras locais prevalecem, ferramentas não executadas não recebem aprovação.
+Cobertura: 5/5 requisitos atendidos (100%), sem requisito pendente. RN001/RN002/RN003 atendidas: placeholders preservados, regras locais prevalecem, ferramentas não executadas não recebem aprovação.
 
 ## Requisitos não funcionais e segurança
 
@@ -51,13 +51,17 @@ exit 1 (esperado; confirma que o modo normal permanece bloqueado)
 quick_validate.py .agents/skills/ub-mode
 Skill is valid!
 
+quick_validate.py aplicado também a bootstrap-project, generate-tests,
+implementation-review, orchestrator e validate-delivery
+Skill is valid! (cinco execuções adicionais)
+
 git diff --check
 exit 0
 ```
 
 TDD da auditoria: antes da correção, 17 testes reportaram 19 falhas/subcasos; casos adicionais detectaram 6 falhas em parsing de declarações vazias/malformadas. Todas as falhas foram corrigidas, totalizando 18 testes aprovados. Fixtures temporárias não alteram o status do repositório real. Foram verificados links Markdown locais e a ausência de diff em project-status/business/architecture.
 
-Avaliação independente: cenários de bug de cálculo, documentação e mutação obrigatória indisponível. Encontrado e corrigido conflito documental sobre build/ambiente, registrado no Impact Analysis. Essa avaliação é ensaio de decisão; não se confunde com teste executado de aplicação.
+Avaliação independente: cenários de bug de cálculo, documentação e mutação obrigatória indisponível. Encontrado e corrigido conflito documental sobre build/ambiente, registrado no Impact Analysis; a nova avaliação confirmou a resolução sem bloqueios adicionais. Essa avaliação é ensaio de decisão; não se confunde com teste executado de aplicação.
 
 Build de aplicação, ambiente de aplicação, banco e E2E: não aplicáveis, pois o template não possui aplicação. O executável alterado teve sintaxe validada e execução real em testes positivos/negativos.
 
@@ -105,7 +109,11 @@ Testes da auditoria, auditoria estrutural e validação de skill: aprovados com 
 - Branch de origem: `codex/integrar-ub-mode`.
 - Main usada na sincronização inicial: `3902eca620ffa1cbd6333e50d933ab2c7db88ea8`.
 - Fetch inicial e pré-integração executados; branch contém `origin/main`.
-- Tipo de merge, commit de integração e evidência de push: pendentes até execução.
+- Tipo de merge: fast-forward, sem conflitos e sem alteração adicional do conteúdo testado.
+- SHA da main após integração da implementação: `a64e8fe419ba49edd47090036ac5fd9fd9dee042`.
+- Branch de entrega enviada com sucesso e tracking configurado.
+- Evidência executada de `git push origin main`: saída 0, `3902eca..a64e8fe main -> main`.
+- O fechamento deste relatório é um commit documental posterior, também integrado/publicado pelo mesmo fluxo. O SHA do commit que contém o próprio relatório pode ser obtido com `git log -1 --format=%H -- intent/integrar-ub-mode_validation_report.md`; o SHA final publicado da main é conferido com `git rev-parse origin/main` e informado na resposta final, evitando autorreferência impossível ao próprio hash.
 
 ## Pendências, divergências e riscos residuais
 
@@ -115,4 +123,4 @@ Limites residuais: qualidade semântica depende da execução das instruções p
 
 ## Decisão final
 
-Aguardando somente reintegração e comprovação da publicação em `origin/main`. Sem risco impeditivo identificado nas verificações técnicas. Não considerar concluído antes do registro da publicação.
+APROVADO. Intent e PRD atendidos; testes e verificações aplicáveis aprovados; reviews aprovadas; implementação reintegrada e publicada na main. Nenhum risco impeditivo ou pendência externa identificado. O bootstrap continua pendente conforme autorizado, e as limitações de ferramentas não configuradas estão explicitadas acima.
